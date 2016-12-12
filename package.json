@@ -1,0 +1,40 @@
+{
+  "name": "json-data",
+  "version": "1.0.0",
+  "description": "App that allows you to store and retrieve json data",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "body-parser": "~1.0.1",
+    "cors": "^2.7.1",
+    "ejs": "2.3.3",
+    "express": "4.13.3",
+    "express-bearer-token": "^2.1.0",
+    "fs": "0.0.2",
+    "http": "0.0.0",
+    "mime-types": "^2.1.13",
+    "mkdirp": "^0.5.1",
+    "multer": "^1.2.0",
+    "path": "^0.12.7",
+    "validator": "^4.2.1"
+  },
+  "engines": {
+    "node": "0.12.7"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jasonhenderson/jasondata.git"
+  },
+  "keywords": [
+    "node",
+    "heroku",
+    "express"
+  ],
+  "license": "GPLV3",
+  "devDependencies": {
+    "bower": "^1.7.9",
+    "webpack": "^1.13.2"
+  }
+}

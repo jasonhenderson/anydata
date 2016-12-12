@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <% include ../partials/header.ejs %>
+</head>
+
+<body>
+
+<% include ../partials/nav.ejs %>
+<div class="container">
+  <form action="/upload" method="post" enctype="multipart/form-data">
+    <div class="form-group">
+      <label for="nameText">Name</label>
+      <input type="text" class="form-control" id="nameText" name="name" placeholder="Name of Resource">
+      <p class="help-block">Provide the name of the resource with the extension.</p>
+    </div>
+    <div class="form-group">
+      <label for="pathText">Path</label>
+      <input type="text" class="form-control" id="pathText" name="path" placeholder="Path to Resource">
+      <p class="help-block">Pick the path to the extension.</p>
+    </div>
+    <div class="form-group">
+      <label for="dataFile">File input</label>
+      <input type="file" id="dataFile" name="file">
+      <p class="help-block">Pick the file you want to upload.</p>
+    </div>
+    <button type="submit" class="btn btn-default">Upload</button>
+  </form>
+</div>
+
+<script
+
+</body>
+</html>

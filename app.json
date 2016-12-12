@@ -1,0 +1,8 @@
+{
+  "name": "DataStorer",
+  "description": "An app that helps you help web resource owners serve CORS 'correctly' for your own purposes",
+  "repository": "https://github.com/jasonhenderson/corsfix",
+  "logo": "http://corsfix.hensys.com/assets/cors.png",
+  "keywords": ["node", "express", "cors"],
+  "image": "heroku/nodejs"
+}
