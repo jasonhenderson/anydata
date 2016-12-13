@@ -16,23 +16,11 @@
 
  Created by jasonhenderson on 12/8/16.
  */
-
 module.exports.controller = function(app) {
-    app.route('/upload')
+
+    app.route('/test')
         .get(function (req, res) {
-            res.render('pages/upload');
-        })
-        .post(function (req, res) {
-
-            console.log('processing upload');
-            if (req.file) {
-
-            }
-            else {
-                //res.render('pages/uploadDone');
-                res.status(200).json({
-                    "message" : "File was successfully uploaded"
-                });
-            }
+            res.render('pages/test');
         });
+
 }

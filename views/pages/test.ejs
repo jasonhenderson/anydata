@@ -2,29 +2,43 @@
 <html>
 <head>
     <% include ../partials/header.ejs %>
+    <style>
+        .spacer {  margin-top: 20px; }
+    </style>
 </head>
 
 <body>
 
 <% include ../partials/nav.ejs %>
 <div class="container">
-    <button class="btn btn-success upload-file">Perform Upload File Test</button>
-    <div class="progress">
+    <h2>Test Upload of File via AJAX POST</h2>
+    <button id="uploadFile" class="btn btn-success">Perform Upload File Test</button>
+    <div class="progress spacer">
         <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
             60%
         </div>
     </div>
 </div>
 
+<hr>
+
 <div class="container">
-    <button class="btn btn-success upload-form">Perform Upload Form Test</button>
+    <h2>Test Upload of JSON via AJAX POST</h2>
+    <button id="uploadJson" class="btn btn-success">Upload</button>
+</div>
+
+<hr>
+
+<div class="container">
+    <h2>Test Download of JSON via AJAX GET</h2>
+    <button id="downloadJson" class="btn btn-success">Perform Upload Form Test</button>
 </div>
 
 <script>
     $(function() {
         setProgress(0);
 
-        $('.upload-file').click(function(e) {
+        $('#uploadFile').click(function(e) {
             setProgress(0);
 
             //https://www.sanwebe.com/2012/06/ajax-file-upload-with-php-and-jquery
@@ -74,18 +88,13 @@
             });
         });
 
-        $('.upload-form').click(function(e) {
+        $('#uploadJson').click(function(e) {
             setProgress(0);
-
-            //var formData = new FormData($('form')[0]);
-            var data = {
-              "message" : "got it!"
-            };
 
             $.ajax({
                 url: "data/testing/1.json",
                 type: "POST",
-                data: JSON.stringify(data),
+                data: JSON.stringify({"message" : "test data"}),
                 dataType: "text",
                 contentType: "application/json",
             }).done(function(data) {
@@ -96,6 +105,24 @@
                 console.log(xhr);
             }).always(function() {
                 console.log('done processing upload');
+            });
+        });
+
+        $('#downloadJson').click(function(e) {
+            setProgress(0);
+
+            $.ajax({
+                url: "data/testing/1.json",
+                type: "GET",
+                dataType: "json",
+            }).done(function(data) {
+                console.log('succeeded download');
+                console.log(data);
+            }).fail(function(xhr) {
+                console.log('failed download');
+                console.log(xhr);
+            }).always(function() {
+                console.log('done processing download');
             });
         });
 
