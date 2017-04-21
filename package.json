@@ -1,18 +1,25 @@
 {
-  "name": "json-data",
+  "name": "anydata",
   "version": "1.0.0",
+  "author": "Jason Henderson",
   "description": "App that allows you to store and retrieve json data",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "gulp && node index.js"
   },
   "dependencies": {
+    "bluebird": "^3.5.0",
     "body-parser": "~1.0.1",
     "cors": "^2.7.1",
     "ejs": "2.3.3",
     "express": "4.13.3",
     "express-bearer-token": "^2.1.0",
     "fs": "0.0.2",
+    "google-auth-library": "^0.10.0",
+    "google-drive": "0.0.7",
+    "google-spreadsheet": "^2.0.3",
+    "google-spreadsheet-to-json": "^0.3.0",
+    "googleapis": "^19.0.0",
     "http": "0.0.0",
     "mime-types": "^2.1.13",
     "mkdirp": "^0.5.1",
@@ -25,16 +32,20 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/jasonhenderson/jasondata.git"
+    "url": "https://github.com/jasonhenderson/anydata.git"
   },
-  "keywords": [
-    "node",
-    "heroku",
-    "express"
-  ],
-  "license": "GPLV3",
+  "license": {
+    "type": "GPLV3",
+    "url": "https://www.gnu.org/licenses/gpl-3.0.html"
+  },
   "devDependencies": {
     "bower": "^1.7.9",
-    "webpack": "^1.13.2"
+    "webpack": "^1.13.2",
+    "browser-sync": "^2.13.0",
+    "gulp": "^3.9.1",
+    "gulp-clean-css": "^2.0.10",
+    "gulp-header": "^1.8.7",
+    "gulp-rename": "^1.2.2",
+    "gulp-uglify": "^1.5.4"
   }
 }

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <% include ../partials/header.ejs %>
+</head>
+
+<body>
+
+<% include ../partials/nav.ejs %>
+<div class="container">
+    <div class="row">
+        <div class="col-md-2">
+            <h4>Commands</h4>
+        </div>
+        <div class="col-md-4">
+            <span id="workingLable"></span>
+        </div>
+        <div id="resultsHeader" class="col-md-6">
+            <h4>Results</h4>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2">
+            <ul id="optionTabs" class="nav nav-pills nav-stacked">
+                <li role="presentation" class="active"><a href="#sheet" role="pill" data-toggle="pill">See Sheet
+                        </a></li>
+                <li role="presentation"><a href="#url" role="pill" data-toggle="pill">Sheet URL
+                    </a></li>
+                <li role="presentation"><a href="#newFolder" role="pill" data-toggle="pill">Create
+                        Folder</a></li>
+                <li role="presentation"><a href="#newSheet" role="pill" data-toggle="pill">Create Sheet</a></li>
+                <li role="presentation"><a href="#getFiles" role="pill" data-toggle="pill">Get File List</a></li>
+                <li role="presentation"><a href="#getFolders" role="pill" data-toggle="pill">Get Folder List</a></li>
+                <li role="presentation">
+                    <a href="#find" role="pill" data-toggle="pill">Find File/Folder</a></li>
+                <li role="presentation">
+                    <a href="#info" role="pill" data-toggle="pill">Info for File/Folder</a></li>
+                <li role="presentation"><a href="#rename" role="pill" data-toggle="pill">Rename File/Folder</a></li>
+                <li role="presentation"><a href="#trash" role="pill" data-toggle="pill">Trash File/Folder</a></li>
+                <li role="presentation"><a href="#untrash" role="pill" data-toggle="pill">Untrash File/Folder</a>
+                </li>
+                <li role="presentation"><a href="#emptyTrash" role="pill" data-toggle="pill">Empty Trash</a></li>
+            </ul>
+        </div><!-- /.col-md-4 -->
+        <div class="col-md-4 bordered">
+            <div class="tab-content">
+                <div id="sheet" role="tabpanel" class="tab-pane active">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Sheet File ID">
+                    </div>
+                    <button class="btn btn-info" type="button" data-loading-text="Getting...">Get Sheet</button>
+                    <p class="help-block">Does not fail if there is already a folder with that name, so you can get duplicates.</p>
+                </div>
+                <div id="url" role="tabpanel" class="tab-pane">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Sheet File ID">
+                    </div>
+                    <button class="btn btn-info" type="button" data-loading-text="Getting...">Get Sheet URL</button>
+                    <p class="help-block">Gets the URL of the file and adds a link button under the results.</p>
+                </div>
+                <div id="newFolder" role="tabpanel" class="tab-pane">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Title">
+                    </div>
+                    <button class="btn btn-default" type="button" data-loading-text="Going...">Go!</button>
+                    <p class="help-block">Does not fail if there is already a folder with that name, so you can get duplicates.</p>
+                </div>
+                <div id="newSheet" role="tabpanel" class="tab-pane">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Parent Folder ID">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Title">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Google Email for Writer (Optional)">
+                    </div>
+                    <button class="btn btn-default" type="button"
+                            data-results="New Sheet" data-loading-text="Going...">Go!
+                    </button>
+                    <p class="help-block">Creates a new spreadsheet, placing it in the folder with the correct permissions.</p>
+                    <p class="help-block">Does not fail if there is already a folder with that name, so you can get duplicates.</p>
+                    <p class="help-block">The Title is required and is the name of the sheet.</p>
+                    <p class="help-block">The Folder ID is required and is the ID of the parent folder.</p>
+                    <p class="help-block">If you provide an email address, only that google account will be able to edit
+                        the file. The sheet will still be viewable by anyone.</p>
+                </div>
+                <div id="find" role="tabpanel" class="tab-pane">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search Text">
+                    </div>
+                    <button class="btn btn-default" type="button"
+                            data-results="Find File/Folder" data-loading-text="Going...">Go!
+                    </button>
+                    <p class="help-block">Will search for all folders and files that match the search text, at any
+                        level.</p>
+                </div>
+                <div id="info" role="tabpanel" class="tab-pane">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search Text">
+                    </div>
+                    <button class="btn btn-default" type="button"
+                            data-results="Info for File/Folder" data-loading-text="Going...">Go!
+                    </button>
+                    <p class="help-block">Will get metadata for file or folder with the identifier.</p>
+                </div>
+                <div id="rename" role="tabpanel" class="tab-pane">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="File or Folder ID">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Title">
+                    </div>
+                    <button class="btn btn-default" type="button"
+                            data-results="Renaming" data-loading-text="Going...">Go!
+                    </button>
+                    <p class="help-block">Will rename if and only if file is found.</p>
+                </div>
+                <div id="getFiles" role="tabpanel" class="tab-pane">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Folder ID">
+                    </div>
+                    <button class="btn btn-default" type="button"
+                            data-results="Get File List" data-loading-text="Going...">Go!
+                    </button>
+                    <p class="help-block">Get files for Folder ID of the parent folder, if not provided will default to root.</p>
+                </div>
+                <div id="getFolders" role="tabpanel" class="tab-pane">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Folder ID">
+                    </div>
+                    <button class="btn btn-default" type="button"
+                            data-results="Get Folder List" data-loading-text="Going...">Go!
+                    </button>
+                    <p class="help-block">Gets folders withing Folder ID, if not provided will default to root.</p>
+                </div>
+                <div id="trash" role="tabpanel" class="tab-pane">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="File or Folder ID">
+                    </div>
+                    <button class="btn btn-default" type="button"
+                            data-results="Trashing" data-loading-text="Going...">Go!
+                    </button>
+                    <p class="help-block">Puts file or folder into trash.</p>
+                    <p class="help-block">Folder or File ID is required.</p>
+                </div>
+                <div id="untrash" role="tabpanel" class="tab-pane">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="File or Folder ID">
+                    </div>
+                    <button class="btn btn-default" type="button"
+                            data-results="Trashing" data-loading-text="Going...">Go!
+                    </button>
+                    <p class="help-block">Pulls file or folder out of trash.</p>
+                    <p class="help-block">Folder or File ID is required.</p>
+                </div>
+                <div id="emptyTrash" role="tabpanel" class="tab-pane">
+                    <button class="btn btn-danger" type="button"
+                            data-results="Emptying Trash" data-loading-text="Emptying...">Empty Trash
+                    </button>
+                    <p class="help-block">This cannot be undone and will remove all trashed folders and files.</p>
+                </div>
+            </div>
+        </div><!-- /.col-md-4 -->
+        <div id="resultsContainer" class="col-md-6">
+            <div id="results">
+                <pre></pre>
+            </div>
+            <button id="clearResultsButton" type="button" class="btn btn-default btn-xs">Clear</button>
+        </div><!-- /.col-md-4 -->
+    </div>
+</div>
+
+<% include ../partials/scripts.ejs %>
+<script>
+    $(function() {
+        setActiveNav("drive")
+    })
+</script>
+<script src="/scripts/bootbox.min.js"></script>
+<script src="/scripts/drivePage.min.js"></script>
+</body>
+</html>
+
+
