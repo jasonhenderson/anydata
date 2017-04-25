@@ -35,7 +35,7 @@ var GOOGLE_AUTH_SCOPE = [
 // Environment variables don't handle \n well, so make sure to adjust the key
 var serviceAccountCredentials = {
     email: process.env.GOOG_EMAIL ? process.env.GOOG_EMAIL : "",
-    privateKey: process.env.GOOG_KEY ? process.env.GOOG_KEY.replace(/\\n/g, "\n") : ""
+    privateKey: process.env.GOOG_KEY ? process.env.GOOG_KEY.replace(/\\n/g, "\n") : undefined
 };
 
 var self = module.exports = {
