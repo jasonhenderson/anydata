@@ -17,22 +17,38 @@
  Created by jasonhenderson on 12/8/16.
  */
 
+var DataHelper = require('../helpers/data')
+
 module.exports.controller = function(app) {
     app.route('/upload')
         .get(function (req, res) {
             res.render('pages/upload');
         })
-        .post(function (req, res) {
+        .post(function (req, res, next) {
 
             console.log('processing upload');
-            if (req.file) {
+            if (!req.body.jsonData || !req.body.jsonData.length) {
+                DataHelper.processError("No JSON data was provided", res)
+                return next();
+            }
 
+            if (!req.body.filePath || !req.body.filePath.length) {
+                DataHelper.processError("No path for the file was provided", res)
+                return next();
             }
-            else {
-                //res.render('pages/uploadDone');
-                res.status(200).json({
-                    "message" : "File was successfully uploaded"
-                });
-            }
+
+            DataHelper
+                .getPathInfo(req, req.body.filePath)
+                .then(function(pathInfo) {
+                    return DataHelper.saveJson(pathInfo, JSON.parse(req.body.jsonData))
+                })
+                .then(function(pathInfo) {
+                    res.jsonp({
+                        url: pathInfo.host + pathInfo.subdir + pathInfo.file
+                    });
+                })
+                .catch(function(err) {
+                    DataHelper.processError(err, res)
+                })
         });
 }

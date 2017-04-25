@@ -27,7 +27,8 @@ module.exports.controller = function (app) {
 
     app.route('/drive/folders/:folderId?')
         .get(function (req, res) {
-            GoogleHelper.authorize()
+            GoogleHelper
+                .authorize()
                 .then(function () {
                     return GoogleHelper.getFolderInfos(req.params.folderId)
                 })
@@ -184,7 +185,7 @@ module.exports.controller = function (app) {
                 res.status(500).send({
                     'message': 'Title is required'
                 });
-                return next();
+                return  next();
             }
 
             GoogleHelper.authorize()

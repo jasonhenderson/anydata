@@ -16,10 +16,7 @@
 
  Created by jasonhenderson on 12/8/16.
  */
-var mime = require('mime-types');
-var path = require('path');
-var mkdirp = require('mkdirp');
-var fs = require('fs');
+var DataHelper = require('../helpers/data')
 
 module.exports.controller = function(app) {
 
@@ -27,81 +24,32 @@ module.exports.controller = function(app) {
         .get(function (req, res) {
 
             // Query string parameter "url" which is the complete URL we want to re-route
-            var pathInfo = getPathInfo(req);
-
-            //console.log('path: ' + pathInfo.path);
-
-            if (fs.existsSync(pathInfo.path)) {
-                fs.readFile(pathInfo.path, 'utf8', function (err, data) {
-                    if (err) {
-                        res.status(500).send('Error processing the file');
-                    }
-                    res.jsonp(JSON.parse(data));
-                });
-            }
-            else {
-                res.status(404).send('No such file...yet!');
-            }
+            DataHelper
+                .getRequestPathInfo(req)
+                .then(function(pathInfo) {
+                    return DataHelper.loadJson(pathInfo)
+                })
+                .then(function(data) {
+                    res.jsonp(data);
+                })
+                .catch(function(err) {
+                    DataHelper.processError(err, res)
+                })
         })
 
         .post(function (req, res) {
-
-            //console.log('processing post of data');
-            //console.log(req.headers);
-
-            var pathInfo = getPathInfo(req);
-
-            mkdirp(pathInfo.dir, function (err) {
-                if (err) {
-                    console.error(err);
-                    res.status(500).send('Error saving upload: ' + err);
-                }
-                else {
-                    // Directory made...
-                    //console.log('directory made');
-
-                    // If the current file exists, you will be removing it and creating a new one.
-                    // Save the posted data to the file
-                    if (fs.existsSync(pathInfo.path)) {
-                        fs.unlinkSync(pathInfo.path);
-                    }
-
-                    fs.appendFile(pathInfo.path, JSON.stringify(req.body), function (err) {
-                        if (err) {
-                            res.status(500).send('Error saving upload: ' + err);
-                        }
-                        else {
-                            res.status(200).send('File successfully uploaded!');
-                        }
+            DataHelper
+                .getRequestPathInfo(req)
+                .then(function(pathInfo) {
+                    return DataHelper.saveJson(pathInfo, req.body)
+                })
+                .then(function(pathInfo) {
+                    res.jsonp({
+                        url: pathInfo.host + pathInfo.subdir + pathInfo.file
                     });
-                }
-            });
+                })
+                .catch(function(err) {
+                    DataHelper.processError(err, res)
+                })
         });
-
-    function getPathInfo(req) {
-        var mimeType = req.headers['content-type'];
-        console.log('mime type: ' + mimeType);
-
-        var mimeTypeExtension = mime.extension(mimeType);
-        console.log('mime type extension: .' + mimeTypeExtension);
-
-        var extension = path.extname(req.path);
-        console.log('extension: ' + extension);
-
-        var storageDir = process.env.STORAGE_DIR || './data_files';
-        var dirName = path.dirname(req.path).replace('/data', storageDir);
-        console.log('directory name: ' + dirName);
-
-        var fileName = path.basename(req.path).replace(extension, '');
-        console.log('file name: ' + fileName);
-
-        var filePath = dirName + '/' + fileName + '.' + extension;
-        console.log('file path: ' + filePath);
-        //console.log('current dir: ' + __dirname);
-
-        return {
-            "dir": dirName,
-            "path": filePath
-        };
-    }
 }
