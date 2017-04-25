@@ -47,8 +47,13 @@ var self = module.exports = {
     authorize: function () {
         return new Promise(function (resolve, reject) {
 
-            // Don't reauth if already done
-            if (self.token.length) return resolve(self.token);
+            // Don't reauth if already done and not expired
+            if (self.token.length) {
+                // If now is less than expiry_date, keep going
+                if ((new Date).getTime() <= self.auth.expiry_date) {
+                    return resolve(self.token)
+                }
+            }
 
             // File with key or key in a string in next arg, one or the other
             var jwt = new Google.auth.JWT(
@@ -126,6 +131,28 @@ var self = module.exports = {
                 }
                 else {
                     resolve(res.spreadsheetId)
+                }
+            })
+        })
+    },
+
+    getSheet: function (fileId) {
+        return new Promise(function (resolve, reject) {
+            // Always make sure we are authorized
+            if (!self.token.length) return reject("Not authorized")
+
+            var request = {
+                bearer_token: self.token,
+                spreadsheetId: fileId
+            }
+
+            GoogleSheets.spreadsheets.get(request, function (err, res) {
+                if (err) {
+                    console.log(err);
+                    reject(err)
+                }
+                else {
+                    resolve(res)
                 }
             })
         })

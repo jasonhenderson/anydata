@@ -62,6 +62,12 @@ $(function () {
         }, $(this))
     })
 
+    // Get Sheet Info: /sheet/info/:fileId
+    $("#sheetInfo button").click(function () {
+        var fileId = $("#sheetInfo input").val()
+        getFromServer("/sheet/info/" + fileId, $(this))
+    })
+
     // Get Files List: /drive/files/:folderId?
     $("#getFiles button").click(function () {
         var folderId = $("#getFiles input").val()

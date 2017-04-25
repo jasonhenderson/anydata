@@ -41,6 +41,30 @@ module.exports.controller = function (app) {
                 })
         })
 
+    app.route('/sheet/info/:fileId')
+        .get(function (req, res) {
+            if (!req.params.fileId || !req.params.fileId.length) {
+                res.status(500).send({
+                    'message': 'File ID is required'
+                });
+                return next();
+            }
+
+            GoogleHelper.authorize()
+                .then(function() {
+                    return GoogleHelper.getSheet(req.params.fileId);
+                })
+                .then(function(sheet) {
+                    res.jsonp(sheet)
+                })
+                .catch(function (err) {
+                    res.status(500).send({
+                        'message': 'Could not get the sheet info',
+                        'error': err
+                    });
+                })
+        })
+
     app.route('/sheet/:fileId')
         .get(function (req, res) {
             if (!req.params.fileId || !req.params.fileId.length) {
@@ -52,9 +76,19 @@ module.exports.controller = function (app) {
 
             GoogleHelper.authorize()
                 .then(function() {
+                    return GoogleHelper.getSheet(req.params.fileId)
+                })
+                .then(function(sheetInfo) {
+                    var sheetNames;
+                    if (sheetInfo && sheetInfo.sheets) {
+                        sheetNames = sheetInfo.sheets.map(function(sheet) {
+                            return sheet.properties.title
+                        })
+                    }
                     return new GoogleSheetJson({
                         token: GoogleHelper.token,
-                        spreadsheetId: req.params.fileId
+                        spreadsheetId: req.params.fileId,
+                        worksheet: sheetNames
                     });
                 })
                 .then(function(sheetJson) {

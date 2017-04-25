@@ -24,13 +24,14 @@
             <ul id="optionTabs" class="nav nav-pills nav-stacked">
                 <li role="presentation" class="active"><a href="#sheet" role="pill" data-toggle="pill">See Sheet
                         </a></li>
+                <li role="presentation"><a href="#sheetInfo" role="pill" data-toggle="pill">Sheet Info</a></li>
                 <li role="presentation"><a href="#url" role="pill" data-toggle="pill">Sheet URL
                     </a></li>
+                <li role="presentation"><a href="#newSheet" role="pill" data-toggle="pill">Create Sheet</a></li>
                 <li role="presentation"><a href="#newFolder" role="pill" data-toggle="pill">Create
                         Folder</a></li>
-                <li role="presentation"><a href="#newSheet" role="pill" data-toggle="pill">Create Sheet</a></li>
-                <li role="presentation"><a href="#getFiles" role="pill" data-toggle="pill">Get File List</a></li>
                 <li role="presentation"><a href="#getFolders" role="pill" data-toggle="pill">Get Folder List</a></li>
+                <li role="presentation"><a href="#getFiles" role="pill" data-toggle="pill">Get File List</a></li>
                 <li role="presentation">
                     <a href="#find" role="pill" data-toggle="pill">Find File/Folder</a></li>
                 <li role="presentation">
@@ -62,7 +63,7 @@
                     <div class="form-group">
                         <input type="text" class="form-control" placeholder="Title">
                     </div>
-                    <button class="btn btn-default" type="button" data-loading-text="Going...">Go!</button>
+                    <button class="btn btn-success" type="button" data-loading-text="Creating...">Create Folder</button>
                     <p class="help-block">Does not fail if there is already a folder with that name, so you can get duplicates.</p>
                 </div>
                 <div id="newSheet" role="tabpanel" class="tab-pane">
@@ -75,8 +76,8 @@
                     <div class="form-group">
                         <input type="text" class="form-control" placeholder="Google Email for Writer (Optional)">
                     </div>
-                    <button class="btn btn-default" type="button"
-                            data-results="New Sheet" data-loading-text="Going...">Go!
+                    <button class="btn btn-success" type="button"
+                            data-results="New Sheet" data-loading-text="Creating...">Create Sheet
                     </button>
                     <p class="help-block">Creates a new spreadsheet, placing it in the folder with the correct permissions.</p>
                     <p class="help-block">Does not fail if there is already a folder with that name, so you can get duplicates.</p>
@@ -85,12 +86,21 @@
                     <p class="help-block">If you provide an email address, only that google account will be able to edit
                         the file. The sheet will still be viewable by anyone.</p>
                 </div>
+                <div id="sheetInfo" role="tabpanel" class="tab-pane">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Sheet File ID">
+                    </div>
+                    <button class="btn btn-info" type="button"
+                            data-results="Sheet Info" data-loading-text="Getting...">Get Sheet Info
+                    </button>
+                    <p class="help-block">All the info about the sheet, not the file</p>
+                </div>
                 <div id="find" role="tabpanel" class="tab-pane">
                     <div class="form-group">
                         <input type="text" class="form-control" placeholder="Search Text">
                     </div>
-                    <button class="btn btn-default" type="button"
-                            data-results="Find File/Folder" data-loading-text="Going...">Go!
+                    <button class="btn btn-info" type="button"
+                            data-results="Find File/Folder" data-loading-text="Finding...">Find
                     </button>
                     <p class="help-block">Will search for all folders and files that match the search text, at any
                         level.</p>
@@ -99,8 +109,8 @@
                     <div class="form-group">
                         <input type="text" class="form-control" placeholder="Search Text">
                     </div>
-                    <button class="btn btn-default" type="button"
-                            data-results="Info for File/Folder" data-loading-text="Going...">Go!
+                    <button class="btn btn-info" type="button"
+                            data-results="Info for File/Folder" data-loading-text="Getting...">Get Info
                     </button>
                     <p class="help-block">Will get metadata for file or folder with the identifier.</p>
                 </div>
@@ -111,8 +121,8 @@
                     <div class="form-group">
                         <input type="text" class="form-control" placeholder="Title">
                     </div>
-                    <button class="btn btn-default" type="button"
-                            data-results="Renaming" data-loading-text="Going...">Go!
+                    <button class="btn btn-success" type="button"
+                            data-results="Renaming" data-loading-text="Renaming...">Rename
                     </button>
                     <p class="help-block">Will rename if and only if file is found.</p>
                 </div>
@@ -120,8 +130,8 @@
                     <div class="form-group">
                         <input type="text" class="form-control" placeholder="Folder ID">
                     </div>
-                    <button class="btn btn-default" type="button"
-                            data-results="Get File List" data-loading-text="Going...">Go!
+                    <button class="btn btn-info" type="button"
+                            data-results="Get File List" data-loading-text="Getting...">Get Files
                     </button>
                     <p class="help-block">Get files for Folder ID of the parent folder, if not provided will default to root.</p>
                 </div>
@@ -129,8 +139,8 @@
                     <div class="form-group">
                         <input type="text" class="form-control" placeholder="Folder ID">
                     </div>
-                    <button class="btn btn-default" type="button"
-                            data-results="Get Folder List" data-loading-text="Going...">Go!
+                    <button class="btn btn-info" type="button"
+                            data-results="Get Folder List" data-loading-text="Getting...">Get Folders
                     </button>
                     <p class="help-block">Gets folders withing Folder ID, if not provided will default to root.</p>
                 </div>
@@ -138,8 +148,8 @@
                     <div class="form-group">
                         <input type="text" class="form-control" placeholder="File or Folder ID">
                     </div>
-                    <button class="btn btn-default" type="button"
-                            data-results="Trashing" data-loading-text="Going...">Go!
+                    <button class="btn btn-danger" type="button"
+                            data-results="Trashing" data-loading-text="Trashing...">Trash
                     </button>
                     <p class="help-block">Puts file or folder into trash.</p>
                     <p class="help-block">Folder or File ID is required.</p>
@@ -148,8 +158,8 @@
                     <div class="form-group">
                         <input type="text" class="form-control" placeholder="File or Folder ID">
                     </div>
-                    <button class="btn btn-default" type="button"
-                            data-results="Trashing" data-loading-text="Going...">Go!
+                    <button class="btn btn-success" type="button"
+                            data-results="Trashing" data-loading-text="Untrashing...">Untrash
                     </button>
                     <p class="help-block">Pulls file or folder out of trash.</p>
                     <p class="help-block">Folder or File ID is required.</p>
