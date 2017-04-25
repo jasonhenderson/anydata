@@ -88,7 +88,8 @@ module.exports.controller = function(app) {
         var extension = path.extname(req.path);
         console.log('extension: ' + extension);
 
-        var dirName = path.dirname(req.path).replace('/data', './data_files');
+        var storageDir = process.env.STORAGE_DIR || './data_files';
+        var dirName = path.dirname(req.path).replace('/data', storageDir);
         console.log('directory name: ' + dirName);
 
         var fileName = path.basename(req.path).replace(extension, '');
