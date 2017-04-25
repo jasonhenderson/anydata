@@ -5,7 +5,8 @@
   "description": "App that allows you to store and retrieve json data",
   "main": "index.js",
   "scripts": {
-    "start": "gulp && node index.js"
+    "start": "node index.js",
+    "build": "gulp && node index.js"
   },
   "dependencies": {
     "bluebird": "^3.5.0",
