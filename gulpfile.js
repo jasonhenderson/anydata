@@ -5,6 +5,7 @@ var cleanCSS = require('gulp-clean-css');
 var rename = require("gulp-rename");
 var uglify = require('gulp-uglify');
 var pkg = require('./package.json');
+var jshint = require('gulp-jshint');
 
 // Set the banner content
 var banner = ['/*!\n',
@@ -59,4 +60,12 @@ gulp.task('dev', ['browserSync', 'minify-css', 'minify-js'], function() {
     gulp.watch('*.ejs', browserSync.reload);
     gulp.watch('public/scripts/**/*.js', browserSync.reload);
     gulp.watch('routes/**/*.js', browserSync.reload);
+});
+
+gulp.task('compile', function () {
+    return gulp.src(['controllers/*.js', 'helpers/*.js'])
+        .pipe(jshint({
+            "asi" : true
+        }))
+        .pipe(jshint.reporter('jshint-stylish'));
 });

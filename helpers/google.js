@@ -50,7 +50,7 @@ var self = module.exports = {
             // Don't reauth if already done and not expired
             if (self.token.length) {
                 // If now is less than expiry_date, keep going
-                if ((new Date).getTime() <= self.auth.expiry_date) {
+                if ((new Date()).getTime() <= self.auth.expiry_date) {
                     return resolve(self.token)
                 }
             }

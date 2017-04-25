@@ -19,7 +19,7 @@
 var mime = require('mime-types');
 var path = require('path');
 var mkdirp = require('mkdirp');
-const fs = require('fs');
+var fs = require('fs');
 
 module.exports.controller = function(app) {
 

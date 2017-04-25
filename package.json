@@ -41,12 +41,15 @@
   },
   "devDependencies": {
     "bower": "^1.7.9",
-    "webpack": "^1.13.2",
     "browser-sync": "^2.13.0",
     "gulp": "^3.9.1",
     "gulp-clean-css": "^2.0.10",
     "gulp-header": "^1.8.7",
+    "gulp-jshint": "^2.0.4",
+    "gulp-jslint": "^1.0.10",
     "gulp-rename": "^1.2.2",
-    "gulp-uglify": "^1.5.4"
+    "gulp-uglify": "^1.5.4",
+    "jshint": "^2.9.4",
+    "webpack": "^1.13.2"
   }
 }
