@@ -44,7 +44,7 @@ module.exports.controller = function(app) {
                 })
                 .then(function(pathInfo) {
                     res.jsonp({
-                        url: pathInfo.host + pathInfo.subdir + pathInfo.file
+                        url: pathInfo.host + "/data" +  pathInfo.subdir + "/" + pathInfo.file
                     });
                 })
                 .catch(function(err) {
