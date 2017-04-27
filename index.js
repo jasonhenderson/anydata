@@ -14,6 +14,7 @@
  You should have received a copy of the GNU General Public License
  along with AnyData Server.  If not, see <http://www.gnu.org/licenses/>.
  */
+require('dotenv').config();
 
 var express = require('express');
 var cors = require('cors');

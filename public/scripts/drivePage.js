@@ -55,10 +55,11 @@ $(function () {
 
     // New Sheet: /sheets/new
     $("#newSheet button").click(function () {
+        var inputs =  $("#newSheet input")
         postToServer("/sheets/new", {
-            "folderId": $("#newSheet input:nth-of-type(1)").val(),
-            "title": $("#newSheet input:nth-of-type(2)").val(),
-            "email": $("#newSheet input:nth-of-type(3)").val()
+            "folderId": inputs.eq(0).val(),
+            "title": inputs.eq(1).val(),
+            "email": inputs.eq(2).val()
         }, $(this))
     })
 
@@ -94,15 +95,15 @@ $(function () {
 
     // Rename: /drive/rename/:fileId/:title
     $("#rename button").click(function () {
-        var fileId = $("#rename input:nth-of-type(1)").val()
-        var title = $("#rename input:nth-of-type(2)").val()
+        var fileId = $("#rename input").eq(0).val()
+        var title = $("#rename input").eq(1).val()
         getFromServer("/drive/rename/" + fileId + "/" + title, $(this))
     })
 
     // Trash: /drive/trash/:fileId
     $("#trash button").click(function () {
         var fileId = $("#trash input").val()
-        deleteFromServer("/drive/trash/" + fileId, $(this))
+        deleteFromServer("/drive/file/" + fileId, $(this))
     })
 
     // Untrash: /drive/untrash

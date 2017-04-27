@@ -12,6 +12,7 @@
     "bluebird": "^3.5.0",
     "body-parser": "~1.0.1",
     "cors": "^2.7.1",
+    "dotenv": "^4.0.0",
     "ejs": "2.3.3",
     "express": "4.13.3",
     "express-bearer-token": "^2.1.0",
