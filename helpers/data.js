@@ -83,7 +83,7 @@ var self = module.exports = {
             var port = req.app.get('port')
 
             resolve({
-                "host": req.protocol + "://" + req.hostname + (port != 80 && port != 443 ? ":" + port : ""),
+                "host": req.protocol + "://" + req.hostname + (req.hostname == "localhost" ? ":" + port : ""),
                 "subdir": subDirName,
                 "file": fileNameWithExt,
                 "dir": dirName,

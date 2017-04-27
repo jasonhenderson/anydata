@@ -41,9 +41,14 @@ $(function () {
     })
 
     // Get Sheet URL: /sheet/url/:fileId
-    $("#url button").click(function () {
-        var fileId = $("#url input").val()
+    $("#sheetEditUrl button").click(function () {
+        var fileId = $("#sheetEditUrl input").val()
         getFromServer("/sheet/url/" + fileId, $(this))
+    })
+
+    $("#sheetJsonUrl button").click(function () {
+        var fileId = $("#sheetJsonUrl input").val()
+        getFromServer("/sheet/url/json/" + fileId, $(this))
     })
 
     // New Folder: /drive/folders/new

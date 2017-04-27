@@ -27,10 +27,10 @@ module.exports.controller = function (app) {
     app.route('/sheets/:folderId?')
         .get(function (req, res) {
             GoogleHelper.authorize()
-                .then(function() {
+                .then(function () {
                     return GoogleHelper.getFiles(req.params.folderId)
                 })
-                .then(function(files) {
+                .then(function (files) {
                     res.jsonp(files)
                 })
                 .catch(function (err) {
@@ -51,10 +51,10 @@ module.exports.controller = function (app) {
             }
 
             GoogleHelper.authorize()
-                .then(function() {
+                .then(function () {
                     return GoogleHelper.getSheet(req.params.fileId);
                 })
-                .then(function(sheet) {
+                .then(function (sheet) {
                     res.jsonp(sheet)
                 })
                 .catch(function (err) {
@@ -75,13 +75,13 @@ module.exports.controller = function (app) {
             }
 
             GoogleHelper.authorize()
-                .then(function() {
+                .then(function () {
                     return GoogleHelper.getSheet(req.params.fileId)
                 })
-                .then(function(sheetInfo) {
+                .then(function (sheetInfo) {
                     var sheetNames;
                     if (sheetInfo && sheetInfo.sheets) {
-                        sheetNames = sheetInfo.sheets.map(function(sheet) {
+                        sheetNames = sheetInfo.sheets.map(function (sheet) {
                             return sheet.properties.title
                         })
                     }
@@ -91,7 +91,7 @@ module.exports.controller = function (app) {
                         worksheet: sheetNames
                     });
                 })
-                .then(function(sheetJson) {
+                .then(function (sheetJson) {
                     res.jsonp(sheetJson)
                 })
                 .catch(function (err) {
@@ -119,7 +119,23 @@ module.exports.controller = function (app) {
             }
 
             res.jsonp({
-                "url" : "https://docs.google.com/spreadsheets/d/" + req.params.fileId + "/edit#gid=0"
+                "url": "https://docs.google.com/spreadsheets/d/" + req.params.fileId + "/edit#gid=0"
+            });
+        })
+
+    app.route('/sheet/url/json/:fileId')
+        .get(function (req, res) {
+            if (!req.params.fileId || !req.params.fileId.length) {
+                res.status(500).send({
+                    'message': 'File ID is required'
+                });
+                return next();
+            }
+
+            var host = req.protocol + "://" + req.hostname + (req.hostname == "localhost" ? ":" + req.app.get('port') : "");
+
+            res.jsonp({
+                "url": host + "/sheet/" + req.params.fileId
             });
         })
 
@@ -140,23 +156,23 @@ module.exports.controller = function (app) {
             }
 
             GoogleHelper.authorize()
-                .then(function() {
+                .then(function () {
                     // Make the sheet
                     return GoogleHelper.createSheet(req.body.title)
                 })
-                .then(function(fileId) {
+                .then(function (fileId) {
                     // Assign the reading permission to everyone
                     return GoogleHelper.moveToFolder(fileId, req.body.folderId)
                 })
-                .then(function(fileId) {
+                .then(function (fileId) {
                     // Assign the writing permission if requested
                     return GoogleHelper.addPermission(fileId, "writer", req.body.email)
                 })
-                .then(function(fileId) {
+                .then(function (fileId) {
                     // Assign the reading permission to everyone
                     return GoogleHelper.addPermission(fileId, "reader")
                 })
-                .then(function(fileId) {
+                .then(function (fileId) {
                     res.jsonp({
                         'id': fileId,
                         'url': 'https://docs.google.com/spreadsheets/d/' + fileId + '/edit#gid=0'
