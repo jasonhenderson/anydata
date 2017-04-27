@@ -20,7 +20,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-2">
+        <div class="col-md-3">
             <ul id="optionTabs" class="nav nav-pills nav-stacked">
                 <li role="presentation" class="active"><a href="#sheet" role="pill" data-toggle="pill">See Sheet
                         </a></li>
@@ -43,7 +43,7 @@
                 <li role="presentation"><a href="#emptyTrash" role="pill" data-toggle="pill">Empty Trash</a></li>
             </ul>
         </div><!-- /.col-md-4 -->
-        <div class="col-md-4 bordered">
+        <div class="col-md-3 bordered">
             <div class="tab-content">
                 <div id="sheet" role="tabpanel" class="tab-pane active">
                     <div class="form-group">
@@ -52,7 +52,14 @@
                     <button class="btn btn-info" type="button" data-loading-text="Getting...">Get Sheet</button>
                     <p class="help-block">Does not fail if there is already a folder with that name, so you can get duplicates.</p>
                 </div>
-                <div id="url" role="tabpanel" class="tab-pane">
+                <div id="sheetEditUrl" role="tabpanel" class="tab-pane">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Sheet File ID">
+                    </div>
+                    <button class="btn btn-info" type="button" data-loading-text="Getting...">Get Sheet URL</button>
+                    <p class="help-block">Gets the URL of the file and adds a link button under the results.</p>
+                </div>
+                <div id="sheetJsonUrl" role="tabpanel" class="tab-pane">
                     <div class="form-group">
                         <input type="text" class="form-control" placeholder="Sheet File ID">
                     </div>
