@@ -18,7 +18,28 @@
  */
 var DataHelper = require('../helpers/data')
 
-module.exports.controller = function(app) {
+module.exports.controller = function (app) {
+
+    app.route('/addToList/*')
+        .post(function (req, res) {
+            DataHelper
+                .getRequestPathInfo(req)
+                .then(function (pathInfo) {
+                    return DataHelper
+                        .addObjectToArray(pathInfo, req.body, req.query.prop)
+                        .then(function (json) {
+                            return DataHelper.saveJson(pathInfo, json)
+                        })
+                })
+                .then(function (pathInfo) {
+                    res.jsonp({
+                        url: pathInfo.host + '/data' + pathInfo.subdir + '/' + pathInfo.file
+                    });
+                })
+                .catch(function (err) {
+                    DataHelper.processError(err, res)
+                })
+        })
 
     app.route('/data/*')
         .get(function (req, res) {
@@ -26,13 +47,13 @@ module.exports.controller = function(app) {
             // Query string parameter "url" which is the complete URL we want to re-route
             DataHelper
                 .getRequestPathInfo(req)
-                .then(function(pathInfo) {
+                .then(function (pathInfo) {
                     return DataHelper.loadJson(pathInfo)
                 })
-                .then(function(data) {
+                .then(function (data) {
                     res.jsonp(data);
                 })
-                .catch(function(err) {
+                .catch(function (err) {
                     DataHelper.processError(err, res)
                 })
         })
@@ -40,15 +61,15 @@ module.exports.controller = function(app) {
         .post(function (req, res) {
             DataHelper
                 .getRequestPathInfo(req)
-                .then(function(pathInfo) {
+                .then(function (pathInfo) {
                     return DataHelper.saveJson(pathInfo, req.body)
                 })
-                .then(function(pathInfo) {
+                .then(function (pathInfo) {
                     res.jsonp({
                         url: pathInfo.host + pathInfo.subdir + pathInfo.file
                     });
                 })
-                .catch(function(err) {
+                .catch(function (err) {
                     DataHelper.processError(err, res)
                 })
         });

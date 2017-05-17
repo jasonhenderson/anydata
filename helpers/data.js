@@ -14,13 +14,14 @@ var self = module.exports = {
                 else {
                     // If the current file exists, you will be removing it and creating a new one.
                     // Save the posted data to the file
+                    // TODO: convert to non-blocking version
                     if (fs.existsSync(pathInfo.path)) {
                         fs.unlinkSync(pathInfo.path);
                     }
 
                     fs.appendFile(pathInfo.path, JSON.stringify(json), function (err) {
-                        console.log("err saving")
                         if (err) {
+                            console.log("err saving", json, pathInfo)
                             reject(err)
                         }
                         else {
@@ -32,8 +33,74 @@ var self = module.exports = {
         })
     },
 
-    loadJson : function(pathInfo) {
-        return new Promise(function(resolve, reject) {
+    addObjectToArray: function (pathInfo, newObject, targetProperty) {
+        return new Promise(function (resolve, reject) {
+            mkdirp(pathInfo.dir, function (err) {
+                if (err) {
+                    console.log("error making directory", pathInfo)
+                    reject(err);
+                }
+                else {
+                    // If the current file exists, open it, parse the array, then add the object to the end
+                    // If not, create a new array and add the object to it
+                    // TODO: convert to non-blocking version
+                    if (fs.existsSync(pathInfo.path)) {
+                        fs.readFile(pathInfo.path, 'utf8', function (err, data) {
+                            if (err) {
+                                return reject("Error reading the file for addition")
+                            }
+
+                            var existingJson = JSON.parse(data)
+
+                            if (typeof existingJson === 'object' && targetProperty && targetProperty.length) {
+                                var existingProperty = existingJson[targetProperty]
+                                if (!existingProperty) {
+                                    existingProperty = []
+                                    existingProperty.push(newObject)
+                                    existingJson[targetProperty] = existingProperty
+                                }
+                                else if (existingProperty instanceof Array) {
+                                    existingProperty.push(newObject)
+                                }
+                                else {
+                                    return reject("Cannot overwrite existing value")
+                                }
+                            }
+                            else if (typeof existingJson === 'object' && (existingJson instanceof Array)) {
+                                existingJson.push(newObject)
+                            }
+                            else {
+                                return reject("Cannot add unless there is an array or target property provided")
+                            }
+
+                            // return resolve(self.saveJson(pathInfo, existingJson));
+                            return resolve(existingJson)
+                        });
+                    }
+                    else {
+                        var existingJson = undefined
+
+                        if (targetProperty && targetProperty.length) {
+                            existingJson = {}
+                            existingJson[targetProperty] = []
+                            existingJson[targetProperty].push(newObject)
+                        }
+                        else {
+                            existingJson = []
+                            existingJson.push(newObject)
+                        }
+
+                        // return resolve(self.saveJson(pathInfo, existingJson));
+                        return resolve(existingJson)
+                    }
+                }
+            })
+        })
+    },
+
+    loadJson: function (pathInfo) {
+        return new Promise(function (resolve, reject) {
+            // TODO: convert to non-blocking version
             if (fs.existsSync(pathInfo.path)) {
                 fs.readFile(pathInfo.path, 'utf8', function (err, data) {
                     if (err) {
@@ -54,21 +121,19 @@ var self = module.exports = {
         })
     },
 
-    getRequestPathInfo : function(req) {
+    getRequestPathInfo: function (req) {
         return new Promise(function (resolve, reject) {
             if (!req) return reject("No request to process")
-
-            var mimeType = req.headers['content-type'];
-            //console.log('mime type: ' + mimeType);
-
-            var mimeTypeExtension = mime.extension(mimeType);
-            //console.log('mime type extension: .' + mimeTypeExtension);
 
             var extension = path.extname(req.path);
             //console.log('extension: ' + extension);
 
             var storageDir = process.env.STORAGE_DIR || './data_files';
-            var dirName = path.dirname(req.path).replace('/data', storageDir);
+
+            var segments = req.path.split(path.sep);
+            var firstSegment = segments && segments.length ? segments[1] : "";
+
+            var dirName = path.dirname(req.path).replace(path.sep + firstSegment, storageDir);
             var subDirName = dirName.replace(storageDir, '')
             //console.log('directory name: ' + dirName);
 
@@ -92,7 +157,7 @@ var self = module.exports = {
         })
     },
 
-    getPathInfo : function(req, input) {
+    getPathInfo: function (req, input) {
 
         return new Promise(function (resolve, reject) {
             if (!input) {
@@ -127,7 +192,7 @@ var self = module.exports = {
         })
     },
 
-    processError: function(err, res) {
+    processError: function (err, res) {
         if (err && typeof err === 'object' && err.status) {
             res.status(err.status).send(err.message);
         }
@@ -145,15 +210,15 @@ var self = module.exports = {
     }
 }
 
-String.prototype.ltrim = function(mask) {
-        var s = this.slice(0)
-        while (~mask.indexOf(s[0])) {
-            s = s.slice(1);
-        }
-        return s;
+String.prototype.ltrim = function (mask) {
+    var s = this.slice(0)
+    while (~mask.indexOf(s[0])) {
+        s = s.slice(1);
+    }
+    return s;
 }
 
-String.prototype.rtrim = function(mask) {
+String.prototype.rtrim = function (mask) {
     var s = this.slice(0)
     while (~mask.indexOf(s[s.length - 1])) {
         s = s.slice(0, -1);
